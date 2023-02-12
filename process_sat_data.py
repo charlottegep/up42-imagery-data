@@ -1,7 +1,10 @@
+import fastapi
 import json
 import requests
 import rasterio
 import numpy as np
+
+app = fastapi.FastAPI()
 
 
 def fetch_scene(geometry_json, cloud_cover_limit):
@@ -70,7 +73,9 @@ def compute_mean(scene):
     return mean_value
 
 
-if __name__ == '__main__':
+@app.get("/mean-value")
+async def mean_value():
     geometry_json = 'satellite_geometry.json'
     scene = fetch_scene(geometry_json=geometry_json, cloud_cover_limit=40)
-    compute_mean(scene=scene)
+    mean_value = compute_mean(scene=scene)
+    return {"mean_value": mean_value}
