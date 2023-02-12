@@ -17,8 +17,7 @@ def fetch_scene(geometry_json, cloud_cover_limit):
     """
 
     with open(geometry_json) as f:
-        geo = f.read()
-    geometry = json.loads(geo)
+        geometry = json.load(f)
 
     headers = {
         'Content-Type': 'application/json',
@@ -43,7 +42,7 @@ def fetch_scene(geometry_json, cloud_cover_limit):
         response = requests.post('https://earth-search.aws.element84.com/v0/search', params=data, headers=headers)
         response.raise_for_status()
     except requests.exceptions.HTTPError as err:
-        print(err)
+        raise err
 
     scene = response.json()
     return scene
