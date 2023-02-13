@@ -3,4 +3,5 @@ numpy
 rasterio
 requests
 requests_mock
+uvicorn
 validators
