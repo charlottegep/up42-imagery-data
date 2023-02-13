@@ -1,6 +1,7 @@
+import unittest
+
 import requests
 import requests_mock
-import unittest
 import validators
 
 import process_sat_data
@@ -19,9 +20,8 @@ class TestProcessSatData(unittest.TestCase):
         with requests_mock.Mocker() as m:
             # mock a failed response from the search endpoint
             m.post('https://earth-search.aws.element84.com/v0/search', text='Bad Request', status_code=400)
-
-            with self.assertRaises(requests.exceptions.HTTPError):
-                scene = process_sat_data.fetch_scene(geometry_json='satellite_geometry.json', cloud_cover_limit=40)
+            scene = process_sat_data.fetch_scene(geometry_json='satellite_geometry.json', cloud_cover_limit=40)
+            self.assertRaises(requests.exceptions.HTTPError)
 
     def test_tif_in_url(self):
         scene = process_sat_data.fetch_scene(geometry_json=JSON, cloud_cover_limit=40)

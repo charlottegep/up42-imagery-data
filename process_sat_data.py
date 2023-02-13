@@ -1,8 +1,9 @@
-import fastapi
 import json
-import requests
-import rasterio
+
+import fastapi
 import numpy as np
+import rasterio
+import requests
 
 app = fastapi.FastAPI()
 
@@ -42,7 +43,7 @@ def fetch_scene(geometry_json, cloud_cover_limit):
         response = requests.post('https://earth-search.aws.element84.com/v0/search', params=data, headers=headers)
         response.raise_for_status()
     except requests.exceptions.HTTPError as err:
-        raise err
+        return err
 
     scene = response.json()
     return scene
@@ -58,8 +59,11 @@ def compute_mean(scene):
     :param scene: the json string of scene search results
     :return: the mean value of the scene -> ndarray
     """
+    try:
+        raster_url = scene["features"][1]["assets"]["visual"]["href"]
+    except IndexError as err:
+        return err
 
-    raster_url = scene["features"][1]["assets"]["visual"]["href"]
     with rasterio.open(raster_url) as src:
         band_avg = []
         for i in range(1, src.count + 1):

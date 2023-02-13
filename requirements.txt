@@ -1,0 +1,6 @@
+fastapi
+numpy
+rasterio
+requests
+requests_mock
+validators
