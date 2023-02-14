@@ -11,11 +11,25 @@ To set up the code, download the repository, then use the command line to naviga
 
 ## Running The Code
 
-Once the required packages have been installed, navigate to your localhost/mean-value in your web browser (for me this was ```http://127.0.0.1:8000/mean-value```). You can then run the code from the command line by running:
+Once the required packages have been installed, you can then run the code from the command line. Start by running in one tab:
 
 ```python3 -m uvicorn process_sat_data:app --reload```
 
-Reload the browser page if necessary, and you should see the mean value output.
+In another tab run:
+
+```
+curl -X 'PUT' \
+  'http://127.0.0.1:8000/mean-value' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "geometry_json": "satellite_geometry.json",
+  "cloud_cover_limit": 40
+}'
+```
+You can change the parameters as desired, with ```geometry_json``` being the json file with the geometry you wish to search, and ```cloud_cover_limit``` as the int limit, [0,100].
+
+You can also run this in the FastAPI Swagger UI (```http://127.0.0.1:8000/docs```), by clicking the ```PUT /mean-value``` tab, "Try it out", editing params if desired, then "Execute". 
 
 ## Testing
 
