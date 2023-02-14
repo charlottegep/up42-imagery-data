@@ -27,7 +27,7 @@ class TestProcessSatData(unittest.TestCase):
         scene = process_sat_data.fetch_scene(geometry_json=JSON, cloud_cover_limit=40)
         raster_url = scene["features"][1]["assets"]["visual"]["href"]
         self.assertTrue(validators.url(raster_url))
-        self.assertIn('.tif', raster_url)
+        self.assertIn('TCI.tif', raster_url)
 
     def test_compute_mean_invalid_data(self):
         scene = {'features': []}

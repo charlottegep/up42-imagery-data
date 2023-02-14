@@ -1,11 +1,19 @@
 import json
+from typing import Optional
 
-import fastapi
 import numpy as np
 import rasterio
 import requests
+from fastapi import FastAPI
+from pydantic import BaseModel
 
-app = fastapi.FastAPI()
+
+class SceneParams(BaseModel):
+    geometry_json: Optional[str] = "satellite_geometry.json"
+    cloud_cover_limit: Optional[int] = 40
+
+
+app = FastAPI()
 
 
 def fetch_scene(geometry_json, cloud_cover_limit):
@@ -13,7 +21,7 @@ def fetch_scene(geometry_json, cloud_cover_limit):
     Searches for and fetches the Sentinel-2 imagery that covers a given geometry.
 
     :param geometry_json: the json file with the geometry to be covered in the scene
-    :param cloud_cover_limit: an integer representing the % limit of cloud cover
+    :param cloud_cover_limit: an integer representing the % limit of cloud cover, [0,100]
     :return: a json string of search results
     """
 
@@ -76,9 +84,9 @@ def compute_mean(scene):
     return mean_value
 
 
-@app.get("/mean-value")
-async def mean_value():
-    geometry_json = 'satellite_geometry.json'
-    scene = fetch_scene(geometry_json=geometry_json, cloud_cover_limit=40)
+@app.put("/mean-value")
+async def mean_value(params: SceneParams):
+    scene = fetch_scene(geometry_json=params.geometry_json, cloud_cover_limit=params.cloud_cover_limit)
     mean_value = compute_mean(scene=scene)
     return {"mean_value": mean_value}
+
