@@ -15,7 +15,13 @@ Once the required packages have been installed, you can then run the code from t
 
 ```python3 -m uvicorn process_sat_data:app --reload```
 
-In another tab run:
+### FastAPI UI
+
+You can run this in the FastAPI Swagger UI (```http://127.0.0.1:8000/docs```), by clicking the ```PUT /mean-value``` tab, "Try it out", editing params if desired, then "Execute". 
+
+### Command Line
+
+If you prefer to run on the command line, in another tab run:
 
 ```
 curl -X 'PUT' \
@@ -28,8 +34,6 @@ curl -X 'PUT' \
 }'
 ```
 You can change the parameters as desired, with ```geometry_json``` being the json file with the geometry you wish to search, and ```cloud_cover_limit``` as the int limit, [0,100].
-
-You can also run this in the FastAPI Swagger UI (```http://127.0.0.1:8000/docs```), by clicking the ```PUT /mean-value``` tab, "Try it out", editing params if desired, then "Execute". 
 
 ## Testing
 
