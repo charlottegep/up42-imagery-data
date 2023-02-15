@@ -89,4 +89,3 @@ async def mean_value(params: SceneParams):
     scene = fetch_scene(geometry_json=params.geometry_json, cloud_cover_limit=params.cloud_cover_limit)
     mean_value = compute_mean(scene=scene)
     return {"mean_value": mean_value}
-
